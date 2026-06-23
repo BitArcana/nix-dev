@@ -105,6 +105,18 @@
               };
             };
 
+            plugins.which-key = {
+              enable = true;
+              settings.spec = [
+                { __unkeyed-1 = "<leader>f"; group = "file/find"; }
+                { __unkeyed-1 = "<leader>b"; group = "buffer"; }
+                { __unkeyed-1 = "<leader>w"; group = "windows"; }
+                { __unkeyed-1 = "<leader>c"; group = "code"; }
+                { __unkeyed-1 = "<leader>g"; group = "git"; }
+                { __unkeyed-1 = "<leader>u"; group = "ui"; }
+              ];
+            };
+
             plugins.treesitter = {
               enable = true;
               settings = {
