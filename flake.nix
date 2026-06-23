@@ -93,6 +93,15 @@
               };
             };
 
+            plugins.treesitter = {
+              enable = true;
+              settings = {
+                highlight.enable = true;
+                indent.enable = true;
+                ensure_installed = [ "lua" "nix" "vim" "vimdoc" ];
+              };
+            };
+
             plugins.telescope = {
               enable = true;
               keymaps = {
