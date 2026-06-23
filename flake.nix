@@ -47,7 +47,14 @@
               }
             ];
 
-            plugins.neo-tree.enable = true;
+            plugins.neo-tree = {
+              enable = true;
+              settings.window.mappings = {
+                "l" = "open";
+                "h" = "close_node";
+                "<space>" = "none";
+              };
+            };
 
             plugins.telescope = {
               enable = true;
