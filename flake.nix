@@ -32,20 +32,57 @@
             globals.mapleader = " ";
 
             keymaps = [
-              {
-                mode = "n";
-                key = "<Space>";
-                action = "<Nop>";
-                options.silent = true;
-              }
-              {
-                mode = "n";
-                key = "<leader>e";
-                action = "<cmd>Neotree toggle<CR>";
-                options.silent = true;
-                options.desc = "Toggle file tree";
-              }
+              # Disable space in normal/visual (leader key)
+              { mode = ["n" "x"]; key = "<Space>"; action = "<Nop>"; options.silent = true; }
+
+              # Better j/k for wrapped lines
+              { mode = ["n" "x"]; key = "j"; action = "v:count == 0 ? 'gj' : 'j'"; options = { expr = true; silent = true; }; }
+              { mode = ["n" "x"]; key = "k"; action = "v:count == 0 ? 'gk' : 'k'"; options = { expr = true; silent = true; }; }
+
+              # Window navigation
+              { mode = "n"; key = "<C-h>"; action = "<C-w>h"; options = { silent = true; desc = "Go to left window"; }; }
+              { mode = "n"; key = "<C-j>"; action = "<C-w>j"; options = { silent = true; desc = "Go to lower window"; }; }
+              { mode = "n"; key = "<C-k>"; action = "<C-w>k"; options = { silent = true; desc = "Go to upper window"; }; }
+              { mode = "n"; key = "<C-l>"; action = "<C-w>l"; options = { silent = true; desc = "Go to right window"; }; }
+
+              # Window resize
+              { mode = "n"; key = "<C-Up>";    action = "<cmd>resize +2<CR>";          options = { silent = true; desc = "Increase window height"; }; }
+              { mode = "n"; key = "<C-Down>";  action = "<cmd>resize -2<CR>";          options = { silent = true; desc = "Decrease window height"; }; }
+              { mode = "n"; key = "<C-Left>";  action = "<cmd>vertical resize -2<CR>"; options = { silent = true; desc = "Decrease window width"; }; }
+              { mode = "n"; key = "<C-Right>"; action = "<cmd>vertical resize +2<CR>"; options = { silent = true; desc = "Increase window width"; }; }
+
+              # Window splits
+              { mode = "n"; key = "<leader>-";  action = "<C-w>s"; options = { silent = true; desc = "Split window below"; }; }
+              { mode = "n"; key = "<leader>|";  action = "<C-w>v"; options = { silent = true; desc = "Split window right"; }; }
+              { mode = "n"; key = "<leader>wd"; action = "<C-w>c"; options = { silent = true; desc = "Delete window"; }; }
+
+              # Buffer navigation
+              { mode = "n"; key = "<S-h>"; action = "<cmd>BufferLineCyclePrev<CR>"; options = { silent = true; desc = "Prev buffer"; }; }
+              { mode = "n"; key = "<S-l>"; action = "<cmd>BufferLineCycleNext<CR>"; options = { silent = true; desc = "Next buffer"; }; }
+              { mode = "n"; key = "[b";    action = "<cmd>BufferLineCyclePrev<CR>"; options = { silent = true; desc = "Prev buffer"; }; }
+              { mode = "n"; key = "]b";    action = "<cmd>BufferLineCycleNext<CR>"; options = { silent = true; desc = "Next buffer"; }; }
+              { mode = "n"; key = "<leader>bd"; action = "<cmd>bdelete<CR>";        options = { silent = true; desc = "Delete buffer"; }; }
+              { mode = "n"; key = "<leader>bo"; action = "<cmd>%bdelete|edit#|bdelete#<CR>"; options = { silent = true; desc = "Delete other buffers"; }; }
+              { mode = "n"; key = "<leader>bb"; action = "<C-^>";                   options = { silent = true; desc = "Switch to other buffer"; }; }
+
+              # File
+              { mode = "n"; key = "<leader>fn"; action = "<cmd>enew<CR>"; options = { silent = true; desc = "New file"; }; }
+
+              # File tree
+              { mode = "n"; key = "<leader>e"; action = "<cmd>Neotree toggle<CR>"; options = { silent = true; desc = "Toggle file tree"; }; }
+
+              # Search (telescope)
+              { mode = "n"; key = "<leader>/"; action = "<cmd>Telescope live_grep<CR>";  options = { silent = true; desc = "Live grep"; }; }
+
+              # Diagnostics
+              { mode = "n"; key = "]d"; action = "<cmd>lua vim.diagnostic.goto_next()<CR>"; options = { silent = true; desc = "Next diagnostic"; }; }
+              { mode = "n"; key = "[d"; action = "<cmd>lua vim.diagnostic.goto_prev()<CR>"; options = { silent = true; desc = "Prev diagnostic"; }; }
+              { mode = "n"; key = "]e"; action = "<cmd>lua vim.diagnostic.goto_next({severity=vim.diagnostic.severity.ERROR})<CR>"; options = { silent = true; desc = "Next error"; }; }
+              { mode = "n"; key = "[e"; action = "<cmd>lua vim.diagnostic.goto_prev({severity=vim.diagnostic.severity.ERROR})<CR>"; options = { silent = true; desc = "Prev error"; }; }
+              { mode = "n"; key = "<leader>cd"; action = "<cmd>lua vim.diagnostic.open_float()<CR>"; options = { silent = true; desc = "Line diagnostics"; }; }
             ];
+
+            plugins.bufferline.enable = true;
 
             plugins.neo-tree = {
               enable = true;
@@ -60,9 +97,10 @@
               enable = true;
               keymaps = {
                 "<leader>ff" = "find_files";
-                "<leader>fg" = "live_grep";
-                "<leader>fb" = "buffers";
+                "<leader>fg" = "git_files";
+                "<leader>fF" = { action = "find_files"; options.desc = "Find files (cwd)"; };
                 "<leader>fr" = "oldfiles";
+                "<leader>fb" = "buffers";
               };
             };
           };
