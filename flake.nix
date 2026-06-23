@@ -29,7 +29,8 @@
               termguicolors = true;
             };
 
-            # Keymaps
+            globals.mapleader = " ";
+
             keymaps = [
               {
                 mode = "n";
@@ -37,9 +38,16 @@
                 action = "<Nop>";
                 options.silent = true;
               }
+              {
+                mode = "n";
+                key = "<leader>e";
+                action = "<cmd>Neotree toggle<CR>";
+                options.silent = true;
+                options.desc = "Toggle file tree";
+              }
             ];
 
-            globals.mapleader = " ";
+            plugins.neo-tree.enable = true;
           };
         in
         {
