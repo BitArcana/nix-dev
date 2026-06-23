@@ -93,6 +93,18 @@
               };
             };
 
+            colorschemes.tokyonight = {
+              enable = true;
+              settings = {
+                style = "moon";
+                transparent = false;
+                styles = {
+                  sidebars = "dark";
+                  floats = "dark";
+                };
+              };
+            };
+
             plugins.treesitter = {
               enable = true;
               settings = {
