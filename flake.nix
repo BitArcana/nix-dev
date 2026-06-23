@@ -156,6 +156,7 @@
       devShells = forAllSystems (system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
+          lib = nixpkgs.lib;
 
           tmuxConf = pkgs.writeText "tmux.conf" ''
             set -g default-shell ${pkgs.fish}/bin/fish
@@ -164,9 +165,8 @@
           tmux = pkgs.writeShellScriptBin "tmux" ''
             exec ${pkgs.tmux}/bin/tmux -f ${tmuxConf} "$@"
           '';
-        in
-        {
-          default = pkgs.mkShell {
+
+          baseShell = pkgs.mkShell {
             shellHook = ''
               exec ${pkgs.fish}/bin/fish --init-command '
                 functions --copy fish_prompt _original_fish_prompt
@@ -186,6 +186,20 @@
               tmux
             ];
           };
-        });
+
+          # Auto-discover all .nix files in profiles/
+          profileFiles = lib.filterAttrs
+            (n: v: v == "regular" && lib.hasSuffix ".nix" n)
+            (builtins.readDir ./profiles);
+
+          profiles = lib.mapAttrs'
+            (filename: _:
+              lib.nameValuePair
+                (lib.removeSuffix ".nix" filename)
+                (import ./profiles/${filename} { inherit pkgs baseShell; })
+            )
+            profileFiles;
+        in
+        { default = baseShell; } // profiles);
     };
 }
