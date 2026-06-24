@@ -2,6 +2,17 @@
 
 Portable Nix development environment with Neovim (nixvim), standard tools, and project profiles.
 
+## Prerequisites
+
+Nix must be installed on your system. On Debian/Ubuntu:
+
+```bash
+sudo apt install nix
+sudo usermod -aG nix-users $USER
+```
+
+Log out and back in (or start a new shell) so the `nix-users` group membership takes effect.
+
 ## Usage
 
 No cloning required. Run directly via GitHub:
